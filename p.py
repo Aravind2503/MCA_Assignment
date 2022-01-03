@@ -6,8 +6,8 @@ import convolution
 import time
 
 
-img = cv2.imread("Resources/mountain_image.jpg", cv2.IMREAD_GRAYSCALE)
-img = cv2.resize(img, (500, 500))
+img = cv2.imread("Resources/salt_pepper.png", cv2.IMREAD_GRAYSCALE)
+# img = cv2.resize(img, (1000, 1000))
 img = np.pad(img, [(1, 1), (1, 1)], mode='constant', constant_values=0)
 
 cv2.imshow("img", img)
@@ -48,10 +48,10 @@ laplace = [[0, -1, 0],
 # cv2.waitKey(0)
 
 start = time.time()
-final = convolution.convolve(
-    img, 1, img.shape[0]-1, 1, img.shape[1]-1, laplace)
+final = convolution.median_s(
+    img, 1, img.shape[0]-1, 1, img.shape[1]-1)
 
 end = time.time()
 print("time taken: ", end-start)
-cv2.imshow("img", final)
+cv2.imshow("img", final/255)
 cv2.waitKey(0)

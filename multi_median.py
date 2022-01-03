@@ -9,30 +9,12 @@ import threading
 import time
 from multiprocessing import Process, shared_memory
 
-# img = cv2.imread("Resources/mountain_image.jpg", cv2.IMREAD_GRAYSCALE)
-# img = cv2.resize(img, (500, 500))
-# img = np.pad(img, [(1, 1), (1, 1)], mode='constant', constant_values=0)
 
-# cv2.imshow("img", img)
-# cv2.waitKey(0)
-# print(os.getpid())
-
-# final_image = np.zeros(shape=(img.shape[0], img.shape[1]))
-
-
-# num_threads = 2
-# rows_n = int(img.shape[0]/num_threads)
-
-# process_pool = []
-
-# laplace = [[0, -1, 0],
-#            [-1, 4, -1],
-#            [0, -1, 0]]
 
 
 if __name__ == "__main__":
-    img = cv2.imread("Resources/mountain_image.jpg", cv2.IMREAD_GRAYSCALE)
-    img = cv2.resize(img, (1000, 1000))
+    img = cv2.imread("Resources/salt_pepper.png", cv2.IMREAD_GRAYSCALE)
+    # img = cv2.resize(img, (1000, 1000))
     img = np.pad(img, [(1, 1), (1, 1)], mode='constant', constant_values=0)
 
     cv2.imshow("img", img)
@@ -46,14 +28,7 @@ if __name__ == "__main__":
 
     process_pool = []
 
-    laplace = [[0, -1, 0],
-               [-1, 4, -1],
-               [0, -1, 0]]
-
-
-    gaussian = [[1/16, 2/16, 1/16],
-                [2/16, 4/16, 2/16],
-                [1/16, 2/16, 1/16]]
+    
     shm = shared_memory.SharedMemory(
         create=True, size=final_image.nbytes, name="shr_mem")
 
@@ -62,8 +37,8 @@ if __name__ == "__main__":
     # b[:] = final_image[:]
 
     for i in range(num_threads):
-        process_pool.append(Process(target=convolution.convolve_multi_process, args=(
-            img, i*rows_n, (i+1)*rows_n, 1, img.shape[1]-1, gaussian)))
+        process_pool.append(Process(target=convolution.median_p, args=(
+            img, i*rows_n, (i+1)*rows_n, 1, img.shape[1]-1)))
 
     start = time.time()
     for i in process_pool:

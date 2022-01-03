@@ -26,7 +26,7 @@ laplace = [[0, -1, 0],
 
 for i in range(num_threads):
     thread_pool.append(threading.Thread(target=convolution.convolve_multi_thread, args=(
-        img, 1+i*rows_n, (i+1)*rows_n, 1, img.shape[1]-1, laplace, final_image)))
+        img, i*rows_n, (i+1)*rows_n, 1, img.shape[1]-1, laplace, final_image)))
 
 start = time.time()
 for i in thread_pool:
@@ -38,5 +38,5 @@ for i in thread_pool:
 end = time.time()
 print("time taken: ", end-start)
 
-cv2.imshow("img", final_image)
+cv2.imshow("img", final_image/255)
 cv2.waitKey(0)
