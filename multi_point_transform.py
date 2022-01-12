@@ -23,8 +23,8 @@ if __name__ == "__main__":
 
     final_image = np.zeros(shape=(img.shape[0], img.shape[1]))
 
-    num_threads = 8
-    rows_n = int(img.shape[0]/num_threads)
+    num_processes = 8
+    rows_n = int(img.shape[0]/num_processes)
 
     process_pool = []
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         img.shape, dtype=np.float32, buffer=shm.buf)
     # b[:] = final_image[:]
 
-    for i in range(num_threads):
+    for i in range(num_processes):
         process_pool.append(Process(target=convolution.log_transform_p, args=(
             img, i*rows_n, (i+1)*rows_n, 1, img.shape[1]-1)))
 
