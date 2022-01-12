@@ -14,7 +14,7 @@ from multiprocessing import Process, shared_memory
 
 if __name__ == "__main__":
     img = cv2.imread("Resources/dark1.jpeg", cv2.IMREAD_GRAYSCALE)
-    # img = cv2.resize(img, (1000, 1000))
+    img = cv2.resize(img, (500, 500))
     img = np.pad(img, [(1, 1), (1, 1)], mode='constant', constant_values=0)
 
     cv2.imshow("img", img)
@@ -52,3 +52,5 @@ if __name__ == "__main__":
 
     cv2.imshow("img", final_image/255)
     cv2.waitKey(0)
+
+    cv2.imwrite("Resources/log_transform.png",final_image)
